@@ -79,7 +79,8 @@ Folds are never averaged into a single number.
 | Table 8 | detectors and /a/-/o/, F0 per correction | `sharma_confusores/controls.py` (`results/analysis/controls.csv`) |
 | Table 9 | F1, F2, F0, HNR, jitter, shimmer per correction | `sharma_confusores/voice_checks.py` (`results/analysis/voice_checks.csv`) |
 | Fig. 10, 11 | factorial design: each correction alone, all but one, all; main effects | `sharma_confusores/sharma_factorial.py`, `analysis_factorial.py` |
-| Table 10 | full permutation test (1000 permutations x 5 runs), 95% CIs, Holm, quantiles of the null | `perm_null.py` (`run_perm_null.sh`), `ci_bootstrap.py`, `perm_pvalues.py` (`results/analysis/perm_pvalues.csv`) |
+| Table 10 | intelligibility per correction: five-vowel recognition trained on original audio, ESTOI, SQUIM | `sharma_confusores/intelligibility_checks.py` (`results/analysis/intelligibility_summary.csv`) |
+| Table 11 | full permutation test (1000 permutations x 5 runs), 95% CIs, Holm, quantiles of the null | `perm_null.py` (`run_perm_null.sh`), `ci_bootstrap.py`, `perm_pvalues.py` (`results/analysis/perm_pvalues.csv`) |
 | Text, "networks trained with random labels" | shuffled validation labels / last epoch | `sharma_confusores/perm_controls.py` |
 
 Every number in these tables can be regenerated from the public archive of the corpus with `prepare_data.py` followed by the `run_all.sh` of each folder. Runs use fixed seeds (7000-7004). Results are bit-identical on the same software versions (`code/requirements.txt`, CPU).

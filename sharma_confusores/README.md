@@ -80,6 +80,7 @@ The audio-derived inputs go to `work/`. Neither folder may be shared, because bo
 | `ci_bootstrap.py` | 95% bootstrap CIs over test children for every condition |
 | `perm_pvalues.py` | p-values, Holm correction and 95th percentile of the null |
 | `voice_checks.py` | F1, F2, F0, HNR, jitter and shimmer before/after each correction |
+| `intelligibility_checks.py` | intelligibility per correction: five-vowel recognition (trained on original audio), ESTOI, SQUIM |
 | `perm_controls.py` | permutation test with shuffled validation labels or the last epoch |
 | `analysis_factorial.py` | tables and figures of the factorial design |
 | `controls.py` | detectors (TD vs SLI, equipment within TD) and voice checks (/a/ vs /o/, F0) per correction |

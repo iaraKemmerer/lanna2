@@ -19,4 +19,5 @@ $PY perm_pvalues.py >> $L 2>&1              # p-values and Holm correction (Tabl
 $PY analysis_factorial.py >> $L 2>&1        # factorial figures and effects
 $PY controls.py >> $L 2>&1                  # detectors and /a/-/o/, F0 per correction
 $PY voice_checks.py >> $L 2>&1              # F1, F2, F0, HNR, jitter, shimmer per correction
+$PY intelligibility_checks.py >> $L 2>&1     # five-vowel recognition, ESTOI and SQUIM per correction
 echo "$(date '+%d/%m %H:%M') SHARMA_FACTORIAL_TERMINADO" >> $L
