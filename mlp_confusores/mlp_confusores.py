@@ -211,9 +211,9 @@ def main():
 # so the text inside them is printed at its real point size (about 9-10 pt) instead of being shrunk by LaTeX.
 PRINT_SIZE = {
     "f1_sampling_rate.png": (4.2, 2.4), "f2_durations.png": (6.5, 2.7), "f3_zero_padding.png": (6.5, 2.9),
-    "f4_channel_measures.png": (6.5, 5.4), "f5_no_voice_classifiers.png": (5.5, 3.1), "f6_equipment_td.png": (6.0, 2.7),
-    "e6_vowels.png": (5.5, 4.2), "f8_snr_compression.png": (6.2, 2.8), "mlp_confounds.png": (5.4, 4.2),
-    "sharma_factorial.png": (6.5, 6.4), "sharma_effects.png": (6.5, 3.3),
+    "f4_channel_measures.png": (6.5, 5.4), "f5_no_voice_classifiers.png": (5.4, 2.7), "f6_equipment_td.png": (6.0, 2.7),
+    "e6_vowels.png": (5.2, 3.5), "f8_snr_compression.png": (6.2, 2.8), "mlp_confounds.png": (5.2, 3.6),
+    "sharma_factorial.png": (6.5, 5.7), "sharma_effects.png": (6.5, 3.3),
 }
 
 
@@ -262,7 +262,7 @@ def plot(R, chance):
             ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:.1f}".replace(".", ",")))
         ax.legend(fontsize=8, loc="upper center", bbox_to_anchor=(0.4, -0.13), ncol=4, frameon=False)
         (FIG / lang).mkdir(parents=True, exist_ok=True)
-        fit_to_print(fig, "mlp_confounds.png"); fig.savefig(FIG / lang / "mlp_confounds.png", dpi=300, bbox_inches="tight"); plt.close(fig)
+        fit_to_print(fig, "mlp_confounds.png"); fig.savefig(FIG / lang / "mlp_confounds.png", dpi=300, bbox_inches="tight"); fig.savefig(FIG / lang / "mlp_confounds.pdf", bbox_inches="tight", metadata={"CreationDate": None, "ModDate": None}); plt.close(fig)
 
 
 if __name__ == "__main__":

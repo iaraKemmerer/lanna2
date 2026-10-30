@@ -139,7 +139,7 @@ def plot_ladder(C, PT, lang):
     h.append(plt.Line2D([], [], color="#888", alpha=.5, lw=4)); l.append(L["null"])
     fig.legend(h, l, loc="lower center", ncol=4, fontsize=8.5, frameon=False)
     fit_to_print(fig, "sharma_factorial.png", rect=(0, 0.06, 1, 1))
-    (FIG / lang).mkdir(parents=True, exist_ok=True); fig.savefig(FIG / lang / "sharma_factorial.png", dpi=300, bbox_inches="tight"); plt.close(fig)
+    (FIG / lang).mkdir(parents=True, exist_ok=True); fig.savefig(FIG / lang / "sharma_factorial.png", dpi=300, bbox_inches="tight"); fig.savefig(FIG / lang / "sharma_factorial.pdf", bbox_inches="tight", metadata={"CreationDate": None, "ModDate": None}); plt.close(fig)
 
 
 def plot_effects(E, lang):
@@ -163,16 +163,16 @@ def plot_effects(E, lang):
             ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{x:+.2f}".replace(".", ",")))
     axes[0].legend(fontsize=8, frameon=False, loc="lower left")
     fig.suptitle(L["title_eff"], fontsize=10.5); fit_to_print(fig, "sharma_effects.png")
-    fig.savefig(FIG / lang / "sharma_effects.png", dpi=300, bbox_inches="tight"); plt.close(fig)
+    fig.savefig(FIG / lang / "sharma_effects.png", dpi=300, bbox_inches="tight"); fig.savefig(FIG / lang / "sharma_effects.pdf", bbox_inches="tight", metadata={"CreationDate": None, "ModDate": None}); plt.close(fig)
 
 
 # Printed size of each figure in the paper (inches; text width of the paper = 6.5 in). Figures are drawn at this size,
 # so the text inside them is printed at its real point size (about 9-10 pt) instead of being shrunk by LaTeX.
 PRINT_SIZE = {
     "f1_sampling_rate.png": (4.2, 2.4), "f2_durations.png": (6.5, 2.7), "f3_zero_padding.png": (6.5, 2.9),
-    "f4_channel_measures.png": (6.5, 5.4), "f5_no_voice_classifiers.png": (5.5, 3.1), "f6_equipment_td.png": (6.0, 2.7),
-    "e6_vowels.png": (5.5, 4.2), "f8_snr_compression.png": (6.2, 2.8), "mlp_confounds.png": (5.4, 4.2),
-    "sharma_factorial.png": (6.5, 6.4), "sharma_effects.png": (6.5, 3.3),
+    "f4_channel_measures.png": (6.5, 5.4), "f5_no_voice_classifiers.png": (5.4, 2.7), "f6_equipment_td.png": (6.0, 2.7),
+    "e6_vowels.png": (5.2, 3.5), "f8_snr_compression.png": (6.2, 2.8), "mlp_confounds.png": (5.2, 3.6),
+    "sharma_factorial.png": (6.5, 5.7), "sharma_effects.png": (6.5, 3.3),
 }
 
 

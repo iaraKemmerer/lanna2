@@ -163,9 +163,9 @@ class _CommaFormatter(ScalarFormatter):
 # so the text inside them is printed at its real point size (about 9-10 pt) instead of being shrunk by LaTeX.
 PRINT_SIZE = {
     "f1_sampling_rate.png": (4.2, 2.4), "f2_durations.png": (6.5, 2.7), "f3_zero_padding.png": (6.5, 2.9),
-    "f4_channel_measures.png": (6.5, 5.4), "f5_no_voice_classifiers.png": (5.5, 3.1), "f6_equipment_td.png": (6.0, 2.7),
-    "e6_vowels.png": (5.5, 4.2), "f8_snr_compression.png": (6.5, 3.5), "mlp_confounds.png": (5.4, 4.2),
-    "sharma_factorial.png": (6.5, 6.4), "sharma_effects.png": (6.5, 3.3),
+    "f4_channel_measures.png": (6.5, 5.4), "f5_no_voice_classifiers.png": (5.4, 2.7), "f6_equipment_td.png": (6.0, 2.7),
+    "e6_vowels.png": (5.2, 3.5), "f8_snr_compression.png": (6.5, 3.5), "mlp_confounds.png": (5.2, 3.6),
+    "sharma_factorial.png": (6.5, 5.7), "sharma_effects.png": (6.5, 3.3),
 }
 
 
@@ -190,6 +190,8 @@ def save(fig, name):
     fit_to_print(fig, name, getattr(fig, "_print_rect", None))
     out = CFG.FIGURES_DIR / FIG_LANG; out.mkdir(parents=True, exist_ok=True)
     fig.savefig(out / name, dpi=300)
+    # vector version for the paper (LaTeX takes the .pdf before the .png); no date, so it is reproducible
+    fig.savefig(out / name.replace(".png", ".pdf"), metadata={"CreationDate": None, "ModDate": None})
 
 
 def paper_font():
