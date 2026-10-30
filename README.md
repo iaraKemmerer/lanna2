@@ -73,12 +73,13 @@ Folds are never averaged into a single number.
 | Fig. 1, 2, 3, 4, 5, 6, 8 · Tables 2, 3 | sampling rate, durations, channel measures, /a/ vs /o/, equipment within TD, classifiers without voice, zero padding | `code/audit.py` (`code/results/audit/`, `code/figures/<es|en>/`) |
 | Fig. 9 | SNR compression by noise for all | `code/signal_figures.py` |
 | Table 4 · Fig. 7 | MLP with only confound measures, with 95% CIs | `mlp_confusores/mlp_confusores.py`, `ci_mlp.py` (`mlp_confusores/results/`) |
-| Table 5 | replication of the CNN of Sharma and Singh (accuracy, sensitivity, specificity, AUC) | `sharma_confusores/main_sharma.py` via `sharma_factorial.py` (`results/sharma/sharma_f<k>_none/summary.json`) |
-| Table 6 | the corrections | `sharma_confusores/sharma_lanna2.py` |
-| Table 7 | detectors and /a/-/o/, F0 per correction | `sharma_confusores/controls.py` (`results/analysis/controls.csv`) |
-| Table 8 | F1, F2, F0, HNR, jitter, shimmer per correction | `sharma_confusores/voice_checks.py` (`results/analysis/voice_checks.csv`) |
+| Table 5 | what was reproduced, reconstructed and modified in the replication | described in the paper; implemented in `sharma_confusores/sharma_lanna2.py`, `main_sharma.py` |
+| Table 6 | replication of the CNN of Sharma and Singh (accuracy, sensitivity, specificity, AUC) | `sharma_confusores/main_sharma.py` via `sharma_factorial.py` (`results/sharma/sharma_f<k>_none/summary.json`) |
+| Table 7 | the corrections | `sharma_confusores/sharma_lanna2.py` |
+| Table 8 | detectors and /a/-/o/, F0 per correction | `sharma_confusores/controls.py` (`results/analysis/controls.csv`) |
+| Table 9 | F1, F2, F0, HNR, jitter, shimmer per correction | `sharma_confusores/voice_checks.py` (`results/analysis/voice_checks.csv`) |
 | Fig. 10, 11 | factorial design: each correction alone, all but one, all; main effects | `sharma_confusores/sharma_factorial.py`, `analysis_factorial.py` |
-| Table 9 | full permutation test (1000 permutations x 5 runs), 95% CIs, Holm | `perm_null.py` (`run_perm_null.sh`), `ci_bootstrap.py`, `perm_pvalues.py` (`results/analysis/perm_pvalues.csv`) |
+| Table 10 | full permutation test (1000 permutations x 5 runs), 95% CIs, Holm, quantiles of the null | `perm_null.py` (`run_perm_null.sh`), `ci_bootstrap.py`, `perm_pvalues.py` (`results/analysis/perm_pvalues.csv`) |
 | Text, "networks trained with random labels" | shuffled validation labels / last epoch | `sharma_confusores/perm_controls.py` |
 
 Every number in these tables can be regenerated from the public archive of the corpus with `prepare_data.py` followed by the `run_all.sh` of each folder. Runs use fixed seeds (7000-7004). Results are bit-identical on the same software versions (`code/requirements.txt`, CPU).
