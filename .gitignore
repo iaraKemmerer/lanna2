@@ -1,0 +1,14 @@
+# No audio and nothing derived from the audio of LANNA in this repository
+data/
+**/work/
+**/results/
+**/results_uncorrected/
+**/figures/
+**/logs/
+*.wav
+*.WAV
+*.lbl
+*.pkl
+*.pth
+__pycache__/
+**/results_networks/

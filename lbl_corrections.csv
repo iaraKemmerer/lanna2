@@ -1,0 +1,6 @@
+file,vowel,lbl_segments,last_segment,used_in_paper,note
+SLI/P20/01SAMOHL/4fl1a.wav,a,a 1 4733 | h\ 4734 2668 | a 7402 8207,7402 8207,7402 8207,several labels; same segment as the last-segment rule
+SLI/P33/01SAMOHL/4hm1o.wav,o,o 2393 4584 | l 6977 4651 | o 11628 10099,11628 10099,11628 10099,several labels; same segment as the last-segment rule
+SLI/P53/01SAMOHL/4bm1o.wav,o,a 940 15693 | | 16633 13413 | o 30046 14754,30046 14754,30046 14754,several labels; same segment as the last-segment rule
+SLI/P8/01SAMOHL/4km1a.wav,a,x 1550 24867,1550 24867,1550 24867,single label that is not the vowel; kept
+TD/H1/01SAMOHL/4PK1O.wav,o,a 1 13919,1 13919,EXCLUDED: the file contains another vowel,changed

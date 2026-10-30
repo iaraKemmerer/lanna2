@@ -1,0 +1,23 @@
+{
+ "name": "A1",
+ "description": "1-D CNN used for fold 1 in the paper (selected by an architecture search on the training/validation children of fold 1; here it is a fixed architecture).",
+ "window_samples": 256,
+ "hop_samples": 128,
+ "sample_rate": 16000,
+ "conv_channels": 10,
+ "conv_layers": [
+  {
+   "kernel": 23,
+   "stride": 4,
+   "padding": 39
+  }
+ ],
+ "conv_dropout": 0.07482296914411414,
+ "mlp_hidden": [
+  8,
+  25
+ ],
+ "mlp_dropout": 0.11520207473335232,
+ "learning_rate": 0.0008926761968321822,
+ "n_parameters": 2489
+}
