@@ -119,7 +119,7 @@ class SharmaRunner(ExperimentRunner):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("-f", "--fold", type=int, required=True, choices=range(CFG.N_FOLDS))
+    ap.add_argument("-f", "--fold", type=int, required=True, choices=list(range(CFG.N_FOLDS)) + [CFG.HOLDOUT_FOLD])
     ap.add_argument("-c", "--corrections", default="none", help="'none' or flags joined by '+': seg dur gain dc pol noise lp4k")
     ap.add_argument("-v", "--vowel", default="o", choices=list(CFG.VOWELS))
     ap.add_argument("-r", "--runs", type=int, default=None)

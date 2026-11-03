@@ -24,6 +24,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from config_lanna2 import CFG
+
 HERE = Path(__file__).resolve().parent
 RES, OUT, FIG = HERE / "results" / "sharma", HERE / "results" / "analysis", HERE / "figures"
 FLAGS = ("seg", "dur", "gain", "dc", "pol", "noise", "lp4k")
@@ -52,6 +54,8 @@ def load():
         if not f.exists():
             continue
         s = json.load(open(f)); o = s["options"]
+        if o["fold"] == CFG.HOLDOUT_FOLD:                              # fold 3: only none/all, in perm_pvalues.py
+            continue
         aucs = [r["test"][o["condition"]]["auc"] for r in s["runs"] if not r["test"][o["condition"]].get("diverged")]
         net = d.name.split("_")[0]
         flags = set() if o["condition"] == "none" else set(o["condition"].split("+"))
@@ -120,11 +124,12 @@ def plot_ladder(C, PT, lang):
                     continue
                 v = g[np.all(g[flags].values == np.array([int(x in k) for x in flags]), axis=1)].auc.iloc[0]
                 ax.scatter(v, yy + (fold - 1) * 0.22, s=22, color=FOLD_C[fold], label=f"{L['fold']} {fold}" if kind == "none" else None, zorder=3)
-            # chance: 95th percentile of the null of 1000 permutations x 5 runs (perm_null.py / perm_pvalues.py)
+            # chance: 95th percentile of the null of the full permutation test (training and validation labels shuffled;
+            # 1000 permutations x 5 runs, perm_null.py / perm_pvalues.py)
             NP = OUT / "perm_pvalues.csv"
             if NP.exists():
-                pv = pd.read_csv(NP)
-                for _, r in pv[(pv.net == net) & (pv.fold == fold)].iterrows():
+                pv = pd.read_csv(NP, dtype={"fold": str})
+                for _, r in pv[(pv.net == net) & (pv.fold == str(fold)) & (pv.test == "full")].iterrows():
                     yy = y[0] if r.condition == "none" else y[-1]
                     ax.plot([0.5, r.null_p95], [yy + (fold - 1) * 0.22] * 2, color=FOLD_C[fold], alpha=.35, lw=4, solid_capstyle="butt")
         for cut in (1 + len(FLAGS), 1 + 2 * len(FLAGS)):

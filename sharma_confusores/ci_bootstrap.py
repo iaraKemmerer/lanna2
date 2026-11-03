@@ -2,7 +2,7 @@
 95% confidence intervals of the child-level test AUC of every condition of the factorial design.
 
 Statistic: the mean AUC of the 5 runs (as reported). Bootstrap over CHILDREN, stratified by class: each resample draws
-12 TD and 12 SLI test children with replacement (the same children for the 5 runs), the AUC of each run is computed on
+as many TD and SLI test children as the fold has (12 + 12; 6 + 18 on the held-out fold 3) with replacement (the same children for the 5 runs), the AUC of each run is computed on
 the resample and averaged; the interval is the 2.5-97.5 percentile of 2000 resamples (seed 0). The interval describes
 the uncertainty due to the 24 test children of the fold; it is not the chance level (that is the permutation test).
 
