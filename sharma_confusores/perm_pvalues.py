@@ -7,7 +7,9 @@ every correction, both networks, folds 0-2 and the held-out fold 3.
               labels: training-label permutation with supervised validation (reported as a secondary analysis).
 
 Observed statistic: mean test AUC of the 5 runs; p = (1 + #{null >= observed}) / (1 + N). Also: the spread of the 5
-runs (SD, min, max of their AUC) and the null median, 95th percentile and maximum. Holm correction within each test and
+runs (SD, min, max of their AUC) and the null median, 95th percentile and maximum; null_seed_spread is the mean
+|AUC - 0.5| of each null training run (each seed of each permutation, not their mean), and chance_seed_spread the same
+for random scores with the same numbers of TD and SLI test children (text, "networks that learn random labels"). Holm correction within each test and
 condition over the six tests of folds 0-2 (two networks x three folds); fold 3 is a separate confirmatory analysis,
 with Holm over its two networks. On fold 3 the rows "f3-early" exclude the children of CFG.HOLDOUT_EARLY_TEST.
 Output: results/analysis/perm_pvalues.csv
@@ -38,7 +40,13 @@ def holm(R, mask):
         running = max(running, min(1.0, (m - i) * R.at[j, "p"])); R.at[j, "p_holm"] = round(running, 4)
 
 
+def chance_spread(n_sli, n_td, n=20000):
+    rng = np.random.default_rng(0); y = np.r_[np.ones(n_sli), np.zeros(n_td)]
+    return float(np.mean([abs(roc_auc_score(y, rng.random(len(y))) - 0.5) for _ in range(n)]))
+
+
 def main():
+    chance = {}
     rows = []
     for net in ("sharma", "sharmaW"):
         for cond in ("none", "all"):
@@ -56,8 +64,14 @@ def main():
                     f = HERE / "results" / "permnull" / f"{net}_f{fold}_{cond}{suf}.csv"
                     if not f.exists():
                         continue
-                    null = pd.read_csv(f)["mean_without_early_test" if drop else "mean"].dropna()
+                    N = pd.read_csv(f)
+                    null = N["mean_without_early_test" if drop else "mean"].dropna()
+                    seeds = N[[c for c in N if c.startswith("auc_seed")]].values if not drop else None
+                    k = (int(pred[pred.run == pred.run.min()].label.sum()), int((pred[pred.run == pred.run.min()].label == 0).sum()))
+                    chance.setdefault(k, chance_spread(*k))
                     rows.append(dict(base, test=test, n_perm=len(null), null_median=round(null.median(), 3),
+                                     null_seed_spread=round(float(np.nanmean(np.abs(seeds - 0.5))), 3) if seeds is not None else np.nan,
+                                     chance_seed_spread=round(chance[k], 3),
                                      null_p95=round(null.quantile(.95), 3), null_max=round(null.max(), 3),
                                      p=round((1 + (null >= base["auc"]).sum()) / (1 + len(null)), 4)))
     R = pd.DataFrame(rows); R["p_holm"] = np.nan

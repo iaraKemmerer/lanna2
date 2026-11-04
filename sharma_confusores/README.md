@@ -5,7 +5,7 @@ Self-contained folder: everything needed to reproduce this part of the LANNA2 pa
 ```bash
 pip install -r requirements.txt
 # data: see ../README.md (python ../prepare_data.py ...); or export LANNA_DIR=/path/to/data/LANNA
-bash run_all.sh                                                    # ~1.5 h on CPU, the three folds in parallel
+bash run_all.sh                                                    # ~30 h on CPU, almost all of it the permutation tests
 ```
 
 ## What it does
@@ -43,7 +43,7 @@ Only the CNN is reimplemented; the CNN-LSTM hybrid is not.
 - circular-shift augmentation in 10-ms steps within ±300 ms, with 10 copies per child.
 
 These settings change so the results compare with the rest of the paper:
-- the subject-disjoint folds in `partitions/` (48 train / 24 validation / 24 test children);
+- the subject-disjoint folds 0-2 in `partitions/` (48 train / 24 validation / 24 test children), plus the held-out fold 3;
 - the epoch is chosen on validation;
 - balanced batches;
 - 5 runs per condition;
@@ -54,9 +54,17 @@ With `--window 2048` (128 ms), the window network receives 50%-overlap windows a
 **Design (`sharma_factorial.py`).** It runs every combination of corrections ("factorial design"):
 - for the 1-s network, all subsets of the 7 flags (96 distinct, since `dur` implies `seg`);
 - for the window network, all subsets of the 6 flags without `dur` (64);
-- a full permutation test, retraining with the training labels shuffled 20 times, for `none` and for all corrections, in both networks.
+- a quick control with 20 permutations (`perm_controls.py`), not used in the paper.
 
 The design therefore contains each correction alone, every pair, "all but one" and all together.
+
+**Held-out fold 3 (`make_holdout_fold.py`).** Its test set is the 24 children (6 TD, 18 SLI) that are in the test set of no other fold, so they were not test children of folds 0-2, on which the corrections were chosen (four of them, `CFG.HOLDOUT_EARLY_TEST`, were test children of an early exploratory fold; results are also given without them). Only the replication and all corrections are run on it, without changing anything.
+
+**Permutation tests (`perm_null.py`, 1000 permutations x 5 runs, the same statistic as the observed result: the mean AUC of the 5 runs).**
+- *Full* (main result, argument `pval`, files `*_pval.csv`): the training labels and the validation labels are shuffled, each among its own children, so the epoch of each null network is chosen with shuffled labels; only the final evaluation uses real labels.
+- *Supervised* (secondary analysis): only the training labels are shuffled and the epoch is chosen with the real validation labels.
+
+`perm_pvalues.py` gives p = (1 + #{null >= observed}) / 1001, Holm over the six tests of folds 0-2 (fold 3 apart, over its two tests), the null quantiles and the per-run spread |AUC - 0.5| of the null against random scores.
 
 ## Output
 
@@ -75,14 +83,17 @@ The audio-derived inputs go to `work/`. Neither folder may be shared, because bo
 | `sharma_lanna2.py` | `SharmaCNN`, `SharmaWindowCNN`, input corrections, circular-shift augmentation |
 | `main_sharma.py` | one fold × one set of corrections × 5 runs |
 | `sharma_factorial.py` | the factorial design on one fold |
-| `run_all.sh` | the three folds in parallel, the permutation controls, the 1000-permutation null, the analysis and the controls of each correction |
-| `perm_null.py`, `run_perm_null.sh` | full permutation test with 1000 permutations x 5 runs (same statistic as the observed result) |
+| `run_all.sh` | everything: the factorial design on folds 0-2, `run_perm_null.sh`, `run_revision2.sh`, the analysis and the controls of each correction |
+| `perm_null.py` | one null distribution: 1000 permutations x 5 runs (`pval`: full test; otherwise supervised) |
+| `run_perm_null.sh` | supervised test, folds 0-2 |
+| `make_holdout_fold.py` | builds the held-out fold 3 (`partitions/fold_3.json`) |
+| `run_revision2.sh` | fold 3 (replication and all corrections), full test on folds 0-3 and supervised test on fold 3 |
 | `ci_bootstrap.py` | 95% bootstrap CIs over test children for every condition |
-| `perm_pvalues.py` | p-values, Holm correction and 95th percentile of the null |
+| `perm_pvalues.py` | p-values of both tests, Holm correction, null quantiles, seed SD and range (Table 11) |
 | `voice_checks.py` | F1, F2, F0, HNR, jitter and shimmer before/after each correction |
 | `intelligibility_checks.py` | intelligibility per correction: five-vowel recognition (trained on original audio) and SQUIM |
-| `perm_controls.py` | permutation test with shuffled validation labels or the last epoch |
+| `perm_controls.py` | quick control (20 permutations) with shuffled validation labels or the last epoch; not used in the paper |
 | `analysis_factorial.py` | tables and figures of the factorial design |
 | `controls.py` | detectors (TD vs SLI, equipment within TD) and voice checks (/a/ vs /o/, F0) per correction |
 | `config_lanna2.py`, `dataset_lanna2.py`, `channel_conditions_lanna2.py`, `trainer_lanna2.py`, `experiment_runner_lanna2.py`, `model_lanna2.py` | copied from `../code` (reading LANNA, `.lbl` segment, noise bank, trainer); `ExperimentRunner` gains `build_model()` |
-| `partitions/` | the three folds (with the `.lbl` corrections) |
+| `partitions/` | folds 0-2 and the held-out fold 3 (with the `.lbl` corrections) |

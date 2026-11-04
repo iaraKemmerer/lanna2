@@ -1,6 +1,6 @@
 #!/bin/bash
 # Reproduces the whole confound ablation with the CNN of Sharma and Singh (2022): the factorial design on the three
-# folds, in parallel on CPU (4 threads each), then the analysis. Resumable: finished conditions are skipped.
+# folds, the held-out fold 3, both permutation tests, in parallel on CPU (4 threads each), then the analysis. Resumable: finished conditions are skipped.
 #   export LANNA_DIR=/path/to/LANNA_Vocales_a_y_o/LANNA_Vocales_a_y_o     (optional, see README.md)
 #   bash run_all.sh
 # Logs in logs/; final mark SHARMA_FACTORIAL_TERMINADO in logs/run_all.log.
@@ -14,6 +14,7 @@ wait
 for k in 0 1 2; do $PY perm_controls.py $k > logs/perm_controls_f$k.log 2>&1 & done   # controls of the permutation test
 wait
 bash run_perm_null.sh                       # null with 1000 permutations x 5 runs (~10 h on 8 CPU processes)
+bash run_revision2.sh                       # fold 3 (held-out) and the full permutation test (main result), folds 0-3
 $PY ci_bootstrap.py >> $L 2>&1              # 95% bootstrap CIs over children, every condition
 $PY perm_pvalues.py >> $L 2>&1              # p-values and Holm correction (Table "permutation test")
 $PY analysis_factorial.py >> $L 2>&1        # factorial figures and effects

@@ -2,8 +2,8 @@
 
 Code for the paper:
 
-> I. Kemmerer, M. F. Gerard, L. D. Vignolo. *Shortcuts in LANNA: duration and recording-channel confounds in the
-> detection of specific language impairment from sustained vowels.* Submitted to Computer Methods and Programs in
+> I. Kemmerer, M. F. Gerard, L. D. Vignolo. *Shortcuts in LANNA: the recording channel and utterance duration in the
+> classification of specific language impairment from sustained vowels.* Submitted to Computer Methods and Programs in
 > Biomedicine.
 
 In the LANNA corpus the diagnosis (typically developing children, TD, vs. children with specific language
@@ -80,8 +80,9 @@ Folds are never averaged into a single number.
 | Table 9 | F1, F2, F0, HNR, jitter, shimmer per correction | `sharma_confusores/voice_checks.py` (`results/analysis/voice_checks.csv`) |
 | Fig. 10, 11 | factorial design: each correction alone, all but one, all; main effects | `sharma_confusores/sharma_factorial.py`, `analysis_factorial.py` |
 | Table 10 | intelligibility per correction: five-vowel recognition trained on original audio, SQUIM | `sharma_confusores/intelligibility_checks.py` (`results/analysis/intelligibility_summary.csv`) |
-| Table 11 | full permutation test (1000 permutations x 5 runs), 95% CIs, Holm, quantiles of the null | `perm_null.py` (`run_perm_null.sh`), `ci_bootstrap.py`, `perm_pvalues.py` (`results/analysis/perm_pvalues.csv`) |
-| Text, "networks trained with random labels" | shuffled validation labels / last epoch | `sharma_confusores/perm_controls.py` |
+| Table 11 | folds 0-2 and the held-out fold 3: AUC with 95% CIs, seed SD and range, full permutation test (training and validation labels shuffled; main result) and supervised-validation test (secondary), 1000 permutations x 5 runs each, Holm, null quantiles | `sharma_confusores/make_holdout_fold.py`, `perm_null.py` (`run_perm_null.sh`, `run_revision2.sh`), `ci_bootstrap.py`, `perm_pvalues.py` (`results/analysis/perm_pvalues.csv`) |
+| Text, fold 3 without its four early test children | AUC and p | `perm_pvalues.py` (rows `3-early`) |
+| Text, "networks that learn random labels" | per-run spread \|AUC - 0.5\| of the null vs. random scores | `perm_pvalues.py` (`null_seed_spread`, `chance_seed_spread`) |
 
 Every number in these tables can be regenerated from the public archive of the corpus with `prepare_data.py` followed by the `run_all.sh` of each folder. Runs use fixed seeds (7000-7004). Results are bit-identical on the same software versions (`code/requirements.txt`, CPU).
 
@@ -92,7 +93,7 @@ python -m venv venv && source venv/bin/activate
 pip install -r code/requirements.txt
 ```
 
-CPU is enough for `mlp_confusores` and `sharma_confusores`, which take about 1.5 h with 3 parallel processes. The fixed CNNs of `code/` are faster on a GPU.
+CPU is enough for `mlp_confusores` and `sharma_confusores`. The factorial design takes a few hours; the permutation tests (about 10 h for `run_perm_null.sh` and 17 h for `run_revision2.sh`, 6-8 processes) take most of the ~30 h of `sharma_confusores/run_all.sh`. The fixed CNNs of `code/` are faster on a GPU.
 
 ## License
 
