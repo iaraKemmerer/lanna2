@@ -73,8 +73,9 @@ class Config:
     # seed) completes it; the test set is never modified. Set to False to reproduce the uncorrected runs.
     LBL_CORRECTIONS = True
     N_FOLDS = 3                  # subject-disjoint folds: 49 train, 24 validation and 24 test children each
-    # Held-out fold (make_holdout_fold.py): its test set is the 24 children in the test set of no other fold, never used
-    # as test children while the corrections were chosen. Only the replication and every correction are run on it.
+    # Held-out fold (make_holdout_fold.py): its test set is the 24 children in the test set of no other fold, so not
+    # test children of folds 0-2, on which the corrections were chosen (four were test children of an early exploratory
+    # fold: HOLDOUT_EARLY_TEST). Only the replication and every correction are run on it.
     HOLDOUT_FOLD = 3
     HOLDOUT_EARLY_TEST = (19, 37, 1002, 1027)   # also test children of an early non-disjoint fold 0 (results without them too)
 

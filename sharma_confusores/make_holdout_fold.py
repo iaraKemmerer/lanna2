@@ -27,7 +27,7 @@ def main():
     folds = [json.load(open(CFG.PARTITIONS_DIR / f"fold_{k}.json")) for k in range(CFG.N_FOLDS)]
     out = {"fold": CFG.HOLDOUT_FOLD,
            "note": "held-out fold: the test children are the 24 children that are in the test set of no other fold "
-                   "(never used as test children while the corrections were chosen); validation 12 TD + 12 SLI drawn "
+                   "(not test children of folds 0-2, on which the corrections were chosen; four were test children of an early exploratory fold); validation 12 TD + 12 SLI drawn "
                    f"from the other children (seed {SEED}), training the rest. See make_holdout_fold.py."}
     rng = np.random.default_rng(SEED)
     test_o = val_o = None

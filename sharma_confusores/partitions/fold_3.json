@@ -1,6 +1,6 @@
 {
  "fold": 3,
- "note": "held-out fold: the test children are the 24 children that are in the test set of no other fold (never used as test children while the corrections were chosen); validation 12 TD + 12 SLI drawn from the other children (seed 2026), training the rest. See make_holdout_fold.py.",
+ "note": "held-out fold: the test children are the 24 children that are in the test set of no other fold (not test children of folds 0-2, on which the corrections were chosen; four were test children of an early exploratory fold); validation 12 TD + 12 SLI drawn from the other children (seed 2026), training the rest. See make_holdout_fold.py.",
  "o": {
   "train": [
    44,
